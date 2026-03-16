@@ -1,20 +1,23 @@
 package br.com.dio.desafio.dominio;
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.Set;
 
-import java.util.*;
-
+// ENCAPSULAMENTO: comportamentos protegidos dentro da classe
 public class Dev {
+
     private String nome;
     private Set<Conteudo> conteudosInscritos = new LinkedHashSet<>();
     private Set<Conteudo> conteudosConcluidos = new LinkedHashSet<>();
 
-    public void inscreverBootcamp(Bootcamp bootcamp){
+    public void inscreverBootcamp(Bootcamp bootcamp) {
         this.conteudosInscritos.addAll(bootcamp.getConteudos());
         bootcamp.getDevsInscritos().add(this);
     }
 
     public void progredir() {
         Optional<Conteudo> conteudo = this.conteudosInscritos.stream().findFirst();
-        if(conteudo.isPresent()) {
+        if (conteudo.isPresent()) {
             this.conteudosConcluidos.add(conteudo.get());
             this.conteudosInscritos.remove(conteudo.get());
         } else {
@@ -22,56 +25,24 @@ public class Dev {
         }
     }
 
+    // POLIMORFISMO: calcularXp() é chamado sem saber se é Curso ou Mentoria
     public double calcularTotalXp() {
-        Iterator<Conteudo> iterator = this.conteudosConcluidos.iterator();
-        double soma = 0;
-        while(iterator.hasNext()){
-            double next = iterator.next().calcularXp();
-            soma += next;
-        }
-        return soma;
-
-        /*return this.conteudosConcluidos
-                .stream()
+        return this.conteudosConcluidos.stream()
                 .mapToDouble(Conteudo::calcularXp)
-                .sum();*/
+                .sum();
     }
 
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome() {
-        return nome;
-    }
+    public Set<Conteudo> getConteudosInscritos() { return conteudosInscritos; }
+    public void setConteudosInscritos(Set<Conteudo> c) { this.conteudosInscritos = c; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Set<Conteudo> getConteudosInscritos() {
-        return conteudosInscritos;
-    }
-
-    public void setConteudosInscritos(Set<Conteudo> conteudosInscritos) {
-        this.conteudosInscritos = conteudosInscritos;
-    }
-
-    public Set<Conteudo> getConteudosConcluidos() {
-        return conteudosConcluidos;
-    }
-
-    public void setConteudosConcluidos(Set<Conteudo> conteudosConcluidos) {
-        this.conteudosConcluidos = conteudosConcluidos;
-    }
+    public Set<Conteudo> getConteudosConcluidos() { return conteudosConcluidos; }
+    public void setConteudosConcluidos(Set<Conteudo> c) { this.conteudosConcluidos = c; }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dev dev = (Dev) o;
-        return Objects.equals(nome, dev.nome) && Objects.equals(conteudosInscritos, dev.conteudosInscritos) && Objects.equals(conteudosConcluidos, dev.conteudosConcluidos);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome, conteudosInscritos, conteudosConcluidos);
+    public String toString() {
+        return "Dev{nome='" + nome + "', inscritos=" + conteudosInscritos + ", concluidos=" + conteudosConcluidos + "}";
     }
 }

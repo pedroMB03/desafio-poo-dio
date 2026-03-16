@@ -7,21 +7,17 @@ public abstract class Conteudo {
     private String titulo;
     private String descricao;
 
+    // ABSTRAÇÃO: método abstrato — cada subclasse define sua própria lógica de XP
     public abstract double calcularXp();
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    @Override
+    public String toString() {
+        return "titulo='" + titulo + "', descricao='" + descricao + "'";
     }
 }
